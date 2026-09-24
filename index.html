@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Lamp Login - Komar</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            background: #050603;
+            color: white;
+        }
+
+        /* =========================
+           RUANGAN
+        ========================== */
+
+        .room {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background:
+                radial-gradient(
+                    circle at 25% 45%,
+                    rgba(255, 214, 51, 0.10),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    #020202,
+                    #0b0c05 60%,
+                    #050503
+                );
+        }
+
+        /* =========================
+           LAMPU
+        ========================== */
+
+        .lamp {
+            position: absolute;
+            left: 18%;
+            top: 18%;
+            width: 180px;
+            height: 430px;
+        }
+
+        /* cahaya lampu */
+        .light {
+            position: absolute;
+            top: 90px;
+            left: -80px;
+
+            width: 340px;
+            height: 380px;
+
+            background: linear-gradient(
+                180deg,
+                rgba(255, 220, 80, 0.55),
+                rgba(255, 200, 30, 0.12),
+                transparent
+            );
+
+            clip-path: polygon(
+                35% 0,
+                65% 0,
+                100% 100%,
+                0 100%
+            );
+
+            filter: blur(7px);
+            opacity: 0.8;
+
+            animation: lampGlow 3s infinite alternate;
+        }
+
+        @keyframes lampGlow {
+            from {
+                opacity: 0.55;
+            }
+
+            to {
+                opacity: 0.9;
+            }
+        }
+
+        /* kepala lampu */
+        .lamp-head {
+            position: absolute;
+            left: 35px;
+            top: 40px;
+
+            width: 110px;
+            height: 45px;
+
+            background: linear-gradient(
+                #25251e,
+                #050505
+            );
+
+            border-radius: 60px 60px 15px 15px;
+
+            box-shadow:
+                0 0 20px rgba(255, 220, 80, 0.3);
+        }
+
+        /* bola lampu */
+        .bulb {
+            position: absolute;
+
+            left: 82px;
+            top: 82px;
+
+            width: 15px;
+            height: 15px;
+
+            background: #ffe66a;
+
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 20px #ffd83d,
+                0 0 50px #ffcf2e,
+                0 0 100px rgba(255, 207, 46, 0.7);
+
+            animation: bulb 2s infinite alternate;
+        }
+
+        @keyframes bulb {
+            from {
+                opacity: 0.7;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* kabel */
+        .wire {
+            position: absolute;
+
+            top: 85px;
+            left: 89px;
+
+            width: 2px;
+            height: 150px;
+
+            background: #555;
+        }
+
+        /* tali kecil */
+        .pull {
+            position: absolute;
+
+            top: 90px;
+            left: 132px;
+
+            width: 2px;
+            height: 100px;
+
+            background: #777;
+        }
+
+        .pull-ball {
+            position: absolute;
+
+            top: 185px;
+            left: 126px;
+
+            width: 13px;
+            height: 13px;
+
+            border-radius: 50%;
+            background: #d8c58a;
+        }
+
+        /* tiang */
+        .stand {
+            position: absolute;
+
+            left: 89px;
+            top: 100px;
+
+            width: 3px;
+            height: 270px;
+
+            background: #222;
+        }
+
+        /* kaki lampu */
+        .base {
+            position: absolute;
+
+            left: 48px;
+            top: 365px;
+
+            width: 85px;
+            height: 15px;
+
+            border-radius: 50%;
+
+            background: #161616;
+
+            box-shadow:
+                0 0 15px rgba(255, 215, 70, 0.2);
+        }
+
+        /* =========================
+           PARTIKEL
+        ========================== */
+
+        .particle {
+            position: absolute;
+
+            width: 5px;
+            height: 5px;
+
+            background: #ffe45b;
+
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 10px #ffe45b,
+                0 0 20px #ffd52c;
+
+            animation: floating 5s infinite ease-in-out;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            30% {
+                opacity: 1;
+            }
+
+            70% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+        }
+
+        /* =========================
+           LOGIN CARD
+        ========================== */
+
+        .login-card {
+            position: absolute;
+
+            top: 50%;
+            right: 9%;
+
+            transform: translateY(-50%);
+
+            width: 390px;
+
+            padding: 38px;
+
+            border-radius: 25px;
+
+            background: rgba(30, 31, 22, 0.82);
+
+            border: 1px solid rgba(255, 255, 255, 0.08);
+
+            backdrop-filter: blur(15px);
+
+            box-shadow:
+                0 25px 80px rgba(0, 0, 0, 0.7),
+                inset 0 0 30px rgba(255, 220, 80, 0.03);
+
+            animation: cardAppear 1s ease;
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(-45%) translateX(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(-50%) translateX(0);
+            }
+        }
+
+        .login-card h1 {
+            text-align: center;
+
+            font-size: 32px;
+
+            margin-bottom: 10px;
+        }
+
+        .login-card .subtitle {
+            text-align: center;
+
+            color: #aaa;
+
+            font-size: 14px;
+
+            margin-bottom: 28px;
+        }
+
+        /* =========================
+           INPUT
+        ========================== */
+
+        .input-box {
+            position: relative;
+
+            margin-bottom: 15px;
+        }
+
+        .input-box input {
+            width: 100%;
+
+            padding: 16px 17px;
+
+            border: 1px solid rgba(255,255,255,0.08);
+
+            outline: none;
+
+            border-radius: 12px;
+
+            background: rgba(5,5,3,0.75);
+
+            color: white;
+
+            font-size: 14px;
+
+            transition: 0.3s;
+        }
+
+        .input-box input:focus {
+            border-color: #ffd51c;
+
+            box-shadow:
+                0 0 15px rgba(255, 213, 28, 0.15);
+        }
+
+        .input-box input::placeholder {
+            color: #777;
+        }
+
+        /* =========================
+           BUTTON
+        ========================== */
+
+        .login-btn {
+            width: 100%;
+
+            padding: 16px;
+
+            margin-top: 8px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background: #ffd51c;
+
+            color: #111;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.25s;
+
+            box-shadow:
+                0 0 20px rgba(255, 213, 28, 0.15);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+
+            background: #ffe45b;
+
+            box-shadow:
+                0 0 30px rgba(255, 213, 28, 0.35);
+        }
+
+        .login-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* =========================
+           PEMISAH
+        ========================== */
+
+        .or {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin: 25px 0;
+
+            color: #777;
+
+            font-size: 12px;
+        }
+
+        .or::before,
+        .or::after {
+            content: "";
+
+            flex: 1;
+
+            height: 1px;
+
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* =========================
+           SOCIAL BUTTON
+        ========================== */
+
+        .social {
+            display: flex;
+
+            gap: 12px;
+        }
+
+        .social button {
+            flex: 1;
+
+            padding: 13px;
+
+            border-radius: 10px;
+
+            border: 1px solid rgba(255,255,255,0.08);
+
+            background: rgba(255,255,255,0.05);
+
+            color: white;
+
+            cursor: pointer;
+
+            transition: 0.25s;
+        }
+
+        .social button:hover {
+            background: rgba(255,255,255,0.1);
+
+            transform: translateY(-2px);
+        }
+
+        /* =========================
+           PESAN
+        ========================== */
+
+        #message {
+            text-align: center;
+
+            margin-top: 18px;
+
+            font-size: 13px;
+
+            min-height: 18px;
+
+            color: #ffd51c;
+        }
+
+        /* =========================
+           RESPONSIVE HP
+        ========================== */
+
+        @media (max-width: 850px) {
+
+            .lamp {
+                left: 50%;
+
+                top: 0;
+
+                transform: translateX(-50%) scale(0.55);
+
+                opacity: 0.7;
+            }
+
+            .light {
+                opacity: 0.5;
+            }
+
+            .login-card {
+                top: 52%;
+
+                right: auto;
+
+                left: 50%;
+
+                transform: translate(-50%, -50%);
+
+                width: calc(100% - 35px);
+
+                max-width: 390px;
+
+                padding: 28px;
+            }
+
+            @keyframes cardAppear {
+                from {
+                    opacity: 0;
+                    transform: translate(-50%, -45%);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translate(-50%, -50%);
+                }
+            }
+
+            .login-card h1 {
+                font-size: 27px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="room">
+
+    <!-- =====================
+         LAMPU
+    ====================== -->
+
+    <div class="lamp">
+
+        <div class="light"></div>
+
+        <div class="lamp-head"></div>
+
+        <div class="bulb"></div>
+
+        <div class="wire"></div>
+
+        <div class="pull"></div>
+
+        <div class="pull-ball"></div>
+
+        <div class="stand"></div>
+
+        <div class="base"></div>
+
+    </div>
+
+
+    <!-- =====================
+         PARTIKEL
+    ====================== -->
+
+    <div class="particle" style="left:10%;top:55%;animation-delay:0s;"></div>
+
+    <div class="particle" style="left:18%;top:65%;animation-delay:1s;"></div>
+
+    <div class="particle" style="left:28%;top:45%;animation-delay:2s;"></div>
+
+    <div class="particle" style="left:40%;top:70%;animation-delay:0.5s;"></div>
+
+    <div class="particle" style="left:55%;top:30%;animation-delay:2.5s;"></div>
+
+    <div class="particle" style="left:70%;top:65%;animation-delay:1.5s;"></div>
+
+    <div class="particle" style="left:82%;top:40%;animation-delay:3s;"></div>
+
+    <div class="particle" style="left:90%;top:70%;animation-delay:2s;"></div>
+
+
+    <!-- =====================
+         LOGIN
+    ====================== -->
+
+    <div class="login-card">
+
+        <h1>Welcome di Perpustakaan Digital STMIK  PAMITRAN </h1
+
+        <p class="subtitle">
+            Enter your details to access your account
+        </p>
+
+
+        <div class="input-box">
+
+            <input
+                type="text"
+                id="username"
+                placeholder="Username"
+            >
+
+        </div>
+
+
+        <div class="input-box">
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Email Address"
+            >
+
+        </div>
+
+
+        <div class="input-box">
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Password"
+            >
+
+        </div>
+
+
+        <button
+            class="login-btn"
+            onclick="login()"
+        >
+            Sign In
+        </button>
+
+
+        <div class="or">
+            OR CONTINUE WITH
+        </div>
+
+
+        <div class="social">
+
+            <button onclick="googleLogin()">
+                🔵 Google
+            </button>
+
+            <button onclick="githubLogin()">
+                ⚫ GitHub
+            </button>
+
+        </div>
+
+
+        <div id="message"></div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /* =========================
+       LOGIN DEMO
+    ========================== */
+
+    function login() {
+
+        const username =
+            document.getElementById("username").value;
+
+        const email =
+            document.getElementById("email").value;
+
+        const password =
+            document.getElementById("password").value;
+
+        const message =
+            document.getElementById("message");
+
+
+        if (
+            username === "" ||
+            email === "" ||
+            password === ""
+        ) {
+
+            message.style.color = "#ff7777";
+
+            message.innerHTML =
+                "⚠️ Semua kolom harus diisi.";
+
+            return;
+        }
+
+
+        if (password.length < 6) {
+
+            message.style.color = "#ff7777";
+
+            message.innerHTML =
+                "⚠️ Password minimal 6 karakter.";
+
+            return;
+        }
+
+
+        message.style.color = "#ffd51c";
+
+        message.innerHTML =
+            "✓ Login berhasil! Selamat datang, " +
+            username + " 🎉";
+
+    }
+
+
+    /* =========================
+       GOOGLE
+    ========================== */
+
+    function googleLogin() {
+
+        const message =
+            document.getElementById("message");
+
+        message.style.color = "#ffd51c";
+
+        message.innerHTML =
+            "Google Login masih dalam mode demo.";
+
+    }
+
+
+    /* =========================
+       GITHUB
+    ========================== */
+
+    function githubLogin() {
+
+        const message =
+            document.getElementById("message");
+
+        message.style.color = "#ffd51c";
+
+        message.innerHTML =
+            "GitHub Login masih dalam mode demo.";
+
+    }
+
+
+    /* =========================
+       EFEK LAMPU SAAT PASSWORD
+    ========================== */
+
+    const password =
+        document.getElementById("password");
+
+    const bulb =
+        document.querySelector(".bulb");
+
+    const light =
+        document.querySelector(".light");
+
+
+    password.addEventListener(
+        "focus",
+        function() {
+
+            bulb.style.boxShadow =
+                "0 0 30px #fff06a, " +
+                "0 0 70px #ffd51c, " +
+                "0 0 120px #ffd51c";
+
+            light.style.opacity = "1";
+
+        }
+    );
+
+
+    password.addEventListener(
+        "blur",
+        function() {
+
+            bulb.style.boxShadow =
+                "0 0 20px #ffd83d, " +
+                "0 0 50px #ffcf2e";
+
+        }
+    );
+
+</script>
+
+</body>
+</html>
